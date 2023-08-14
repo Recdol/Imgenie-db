@@ -21,7 +21,7 @@ def should_have_at_least_one_song(songs: list[SongDocument]):
         raise ValidationError("Playlist should have at least one song")
 
 
-class PlaylistDocument(Document, CreatedAtMixin, UpdatedAtMixin):
+class PlaylistDocument(CreatedAtMixin, UpdatedAtMixin, Document):
     genie_id = StringField(required=True)
     title = StringField(required=True)
     subtitle = StringField(required=True)

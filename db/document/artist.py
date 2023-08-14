@@ -4,7 +4,7 @@ from ..model import Artist
 from .mixin.date import CreatedAtMixin, UpdatedAtMixin
 
 
-class ArtistDocument(Document, CreatedAtMixin, UpdatedAtMixin):
+class ArtistDocument(CreatedAtMixin, UpdatedAtMixin, Document):
     genie_id = StringField(required=True, unique=True)
     name = StringField(required=True)
 

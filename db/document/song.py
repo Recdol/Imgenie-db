@@ -5,7 +5,7 @@ from .album import AlbumDocument
 from .mixin.date import CreatedAtMixin, UpdatedAtMixin
 
 
-class SongDocument(Document, CreatedAtMixin, UpdatedAtMixin):
+class SongDocument(CreatedAtMixin, UpdatedAtMixin, Document):
     genie_id = StringField(required=True, unique=True)
     title = StringField(required=True)
     lyrics = StringField(required=True)
