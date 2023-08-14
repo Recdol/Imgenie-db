@@ -3,3 +3,4 @@ pydantic==2.1.1
 mongomock==4.1.2
 pytest==7.4.0
 python-dotenv==1.0.0
+blinker==1.6.2
