@@ -1,7 +1,7 @@
 from mongoengine import QuerySet
-from ..exception import NotFoundAlbumException, NotFoundArtistException, NotFoundPlaylistException, NotFoundSongException
-from ..document import AlbumDocument, ArtistDocument, PlaylistDocument, SongDocument
-from ..model import Album, Artist, Playlist, Song
+from ..exception import NotFoundAlbumException, NotFoundArtistException, NotFoundPlaylistException, NotFoundSongException, NotFoundUserException
+from ..document import AlbumDocument, ArtistDocument, PlaylistDocument, SongDocument, UserDocument
+from ..model import Album, Artist, Playlist, Song, User
 
 
 def find_album_doc_by_dto(album: Album) -> AlbumDocument:
@@ -76,5 +76,14 @@ def find_song_docs_by_dto(songs: tuple[Song]) -> "QuerySet[SongDocument]":
                 not_found_songs.append(song)
 
         raise NotFoundSongException(f"Can't find song documents: {not_found_songs}")
+
+    return query_set
+
+
+def find_user_doc_by_dto(user: User) -> UserDocument:
+    query_set = UserDocument.objects(id=user.id).first()
+
+    if not query_set:
+        raise NotFoundUserException(f"Can't find user document: {user}")
 
     return query_set
