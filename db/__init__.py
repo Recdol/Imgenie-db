@@ -1,4 +1,8 @@
 import mongoengine
+from . import model
+from . import repository
+from . import exception
+from . import config
 
 
 def connect(db: str, host: str, username: str, password: str, mongo_client_class=None):
@@ -15,8 +19,4 @@ def disconnect():
     mongoengine.disconnect()
 
 
-from . import model
-from . import repository
-from . import exception
-
-__all__ = model.__all__ + exception.__all__ + repository.__all__
+__all__ = model.__all__ + exception.__all__ + repository.__all__ + config.__all__
