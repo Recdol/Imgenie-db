@@ -15,8 +15,8 @@ def disconnect():
     mongoengine.disconnect()
 
 
-import model
-import repository
-import exception
+from . import model
+from . import repository
+from . import exception
 
 __all__ = [*model.__all__, *exception.__all__ * repository.__all__]
