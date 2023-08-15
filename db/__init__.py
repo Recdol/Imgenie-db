@@ -2,7 +2,7 @@ import mongoengine
 from . import model
 from . import repository
 from . import exception
-from . import config
+from . import config as _config
 
 from .model import *  # noqa: F401
 from .repository import *  # noqa: F401
@@ -24,4 +24,4 @@ def disconnect():
     mongoengine.disconnect()
 
 
-__all__ = model.__all__ + exception.__all__ + repository.__all__ + config.__all__
+__all__ = model.__all__ + exception.__all__ + repository.__all__ + _config.__all__
