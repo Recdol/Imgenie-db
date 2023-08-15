@@ -6,10 +6,10 @@ from .user import NotFoundUserException
 from .auth import NotFoundAuthException
 
 __all__ = [
-    NotFoundAlbumException,
-    NotFoundArtistException,
-    NotFoundPlaylistException,
-    NotFoundSongException,
-    NotFoundUserException,
-    NotFoundAuthException,
+    "NotFoundAlbumException",
+    "NotFoundArtistException",
+    "NotFoundPlaylistException",
+    "NotFoundSongException",
+    "NotFoundUserException",
+    "NotFoundAuthException",
 ]

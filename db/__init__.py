@@ -4,6 +4,11 @@ from . import repository
 from . import exception
 from . import config
 
+from .model import *  # noqa: F401
+from .repository import *  # noqa: F401
+from .exception import *  # noqa: F401
+from .config import *  # noqa: F401
+
 
 def connect(db: str, host: str, username: str, password: str, mongo_client_class=None):
     mongoengine.connect(
