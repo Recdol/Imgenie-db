@@ -5,4 +5,4 @@ from .song import SongRepository
 from .user import UserRepository
 from .auth import AuthRepository
 
-__all__ = [AlbumRepository, ArtistRepository, PlaylistRepository, SongRepository, UserRepository, AuthRepository]
+__all__ = ["AlbumRepository", "ArtistRepository", "PlaylistRepository", "SongRepository", "UserRepository", "AuthRepository"]

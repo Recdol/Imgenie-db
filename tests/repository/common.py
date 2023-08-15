@@ -5,7 +5,7 @@ import db
 
 
 def connect_to_db():
-    dotenv.load_dotenv()
+    dotenv.load_dotenv(".env.test")
     host = os.environ.get("DB_HOST")
     db_name = os.environ.get("DB_NAME")
     username = os.environ.get("DB_USERNAME")

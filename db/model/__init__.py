@@ -5,4 +5,4 @@ from .song import Song
 from .user import User
 from .auth import Auth
 
-__all__ = [Album, Artist, Playlist, Song, User, Auth]
+__all__ = ["Album", "Artist", "Playlist", "Song", "User", "Auth"]

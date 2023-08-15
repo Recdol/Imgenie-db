@@ -21,10 +21,10 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ${{ env.pythonLocation }}
-          key: ${{ env.pythonLocation }}-seq-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements.txt') }}
+          key: ${{ env.pythonLocation }}-seq-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements-test.txt') }}
 
       - name: install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements-test.txt
 
       - name: test
         run: pytest
