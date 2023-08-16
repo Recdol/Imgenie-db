@@ -24,4 +24,4 @@ def disconnect():
     mongoengine.disconnect()
 
 
-__all__ = model.__all__ + exception.__all__ + repository.__all__ + _config.__all__
+__all__ = model.__all__ + exception.__all__ + repository.__all__ + _config.__all__ + ["connect", "disconnect"]
