@@ -38,3 +38,13 @@ class ArtistRepository:
     def find_all(self) -> list[Artist]:
         artists: QuerySet[ArtistDocument] = ArtistDocument.objects
         return [artist.to_dto() for artist in artists]
+
+    @classmethod
+    def _artist_dict2dto(cls, artist_dict) -> Artist:
+        return Artist(
+            id=str(artist_dict["_id"]),
+            genie_id=artist_dict["genie_id"],
+            name=artist_dict["name"],
+            created_at=artist_dict["created_at"],
+            updated_at=artist_dict["updated_at"],
+        )

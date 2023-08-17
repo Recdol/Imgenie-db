@@ -39,3 +39,15 @@ class AlbumRepository:
     def find_all(self) -> list[Album]:
         albums: QuerySet[AlbumDocument] = AlbumDocument.objects
         return [album.to_dto() for album in albums]
+
+    @classmethod
+    def _album_dict2dto(cls, album_dict) -> Album:
+        return Album(
+            id=str(album_dict["_id"]),
+            genie_id=album_dict["genie_id"],
+            name=album_dict["name"],
+            img_url=album_dict["img_url"],
+            released_date=album_dict["released_date"],
+            created_at=album_dict["created_at"],
+            updated_at=album_dict["updated_at"],
+        )
