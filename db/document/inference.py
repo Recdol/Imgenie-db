@@ -55,11 +55,7 @@ class InferenceOutputEmbeddedDocument(EmbeddedDocument):
 
 
 class InferenceFeedbackEmbeddedDocument(EmbeddedDocument):
-    like_songs = ListField(
-        ReferenceField(SongDocument),
-        required=True,
-        validation=_should_have_at_least_one_genre,
-    )
+    like_songs = ListField(ReferenceField(SongDocument))
 
     def to_dto(self) -> InferenceFeedback:
         return InferenceFeedback(like_songs=[song.to_dto() for song in self.like_songs])
