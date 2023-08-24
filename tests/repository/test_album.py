@@ -1,11 +1,12 @@
 import unittest
-from .common import connect_to_db
+import time
+from datetime import date, datetime, timedelta
+
 import db
-from db.model import Album
 from db.repository import AlbumRepository
 from db.exception import NotFoundAlbumException
-from datetime import date, datetime, timedelta
-import time
+from .common import connect_to_db
+from .document_provider import create_album
 
 
 class TestAlbum(unittest.TestCase):
@@ -20,7 +21,8 @@ class TestAlbum(unittest.TestCase):
         db.disconnect()
 
     def test_create_album(self):
-        self.__album(
+        create_album(
+            self.album_repository,
             "H1",
             "주혜인",
             "http://album.png",
@@ -28,7 +30,8 @@ class TestAlbum(unittest.TestCase):
         )
 
     def test_delete_by_genie_id(self):
-        album = self.__album(
+        album = create_album(
+            self.album_repository,
             "H1",
             "주혜인",
             "http://album.png",
@@ -46,7 +49,8 @@ class TestAlbum(unittest.TestCase):
         )
 
     def test_find_by_geine_id(self):
-        album = self.__album(
+        album = create_album(
+            self.album_repository,
             "H1",
             "주혜인",
             "http://album.png",
@@ -57,7 +61,8 @@ class TestAlbum(unittest.TestCase):
         assert album == found
 
     def test_find_by_updated_at_gte(self):
-        album1 = self.__album(
+        _album1 = create_album(  # noqa: F841
+            self.album_repository,
             "H1",
             "주혜인",
             "http://album.png",
@@ -65,7 +70,8 @@ class TestAlbum(unittest.TestCase):
         )
 
         time.sleep(0.01)
-        album2 = self.__album(
+        album2 = create_album(
+            self.album_repository,
             "H2",
             "서민석",
             "http://album.png",
@@ -77,19 +83,22 @@ class TestAlbum(unittest.TestCase):
 
     def test_find_all(self):
         albums = [
-            self.__album(
+            create_album(
+                self.album_repository,
                 "H1",
                 "주혜인",
                 "http://album.png",
                 date(2001, 3, 13),
             ),
-            self.__album(
+            create_album(
+                self.album_repository,
                 "H2",
                 "서민석",
                 "http://album.png",
                 date(2005, 12, 8),
             ),
-            self.__album(
+            create_album(
+                self.album_repository,
                 "H3",
                 "이준영",
                 "http://album.png",
@@ -99,6 +108,3 @@ class TestAlbum(unittest.TestCase):
 
         found = self.album_repository.find_all()
         assert albums == found
-
-    def __album(self, genie_id: str, name: str, img_url: str, released_date: date) -> Album:
-        return self.album_repository.create_Album(genie_id, name, img_url, released_date)

@@ -1,11 +1,13 @@
 import unittest
-from .common import connect_to_db
+import time
+from datetime import datetime, timedelta
+
 import db
 from db.model import Artist
 from db.repository import ArtistRepository
 from db.exception import NotFoundArtistException
-from datetime import datetime, timedelta
-import time
+from .common import connect_to_db
+from .document_provider import create_artist
 
 
 class TestArtist(unittest.TestCase):
@@ -20,10 +22,10 @@ class TestArtist(unittest.TestCase):
         db.disconnect()
 
     def test_create_artist(self):
-        self.__artist("H1", "주혜인")
+        create_artist(self.artist_repository, "H1", "주혜인")
 
     def test_delete_by_genie_id(self):
-        artist = self.__artist("H1", "주혜인")
+        artist = create_artist(self.artist_repository, "H1", "주혜인")
 
         self.artist_repository.delete_by_genie_id(artist.genie_id)
         found = self.artist_repository.find_by_genie_id(artist.genie_id)
@@ -36,21 +38,25 @@ class TestArtist(unittest.TestCase):
         )
 
     def test_find_by_geine_id(self):
-        artist = self.__artist("H1", "주혜인")
+        artist = create_artist(self.artist_repository, "H1", "주혜인")
 
         found = self.artist_repository.find_by_genie_id(artist.genie_id)
         assert artist == found
 
     def test_find_by_updated_at_gte(self):
-        artist1 = self.__artist("H1", "주혜인")
+        artist1 = create_artist(self.artist_repository, "H1", "주혜인")  # noqa: F841
         time.sleep(0.01)
-        artist2 = self.__artist("H2", "박동연")
+        artist2 = create_artist(self.artist_repository, "H2", "박동연")
 
         found = self.artist_repository.find_by_updated_at_gte(datetime.utcnow() - timedelta(milliseconds=1))
         assert [artist2] == found
 
     def test_find_all(self):
-        artists = [self.__artist("H1", "주혜인"), self.__artist("H2", "박동연"), self.__artist("H3", "강찬미")]
+        artists = [
+            create_artist(self.artist_repository, "H1", "주혜인"),
+            create_artist(self.artist_repository, "H2", "박동연"),
+            create_artist(self.artist_repository, "H3", "강찬미"),
+        ]
 
         found = self.artist_repository.find_all()
         assert artists == found
