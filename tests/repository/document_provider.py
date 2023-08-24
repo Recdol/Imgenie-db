@@ -1,7 +1,7 @@
 from datetime import date
 
-from db.repository import UserRepository, ArtistRepository, AlbumRepository, PlaylistRepository, SongRepository
-from db.model import User, Artist, Album, Playlist, Song, Auth
+from db.repository import UserRepository, ArtistRepository, AlbumRepository, PlaylistRepository, SongRepository, AuthRepository, InferenceRepository
+from db.model import User, Artist, Album, Playlist, Song, Auth, Inference
 
 
 def create_user(user_repository: UserRepository) -> User:
@@ -53,5 +53,24 @@ def create_playlist(
     return playlist_repository.create_playlist(genie_id, title, subtitle, song_cnt, like_cnt, view_cnt, tags, songs, img_url)
 
 
-def create_auth(auth_repository, user: User, refresh_token: str) -> Auth:
+def create_auth(auth_repository: AuthRepository, user: User, refresh_token: str) -> Auth:
     return auth_repository.create_auth(user=user, refresh_token=refresh_token)
+
+
+def create_inference(
+    inference_repository: InferenceRepository,
+    user: User,
+    output_playlists: list[Playlist],
+    output_songs: list[Song],
+    feedback_like_songs: list[Song],
+    query_image_url: str = "http://123.com/123.png",
+    query_genres: list[str] = ["POP"],
+) -> Inference:
+    return inference_repository.create_inference(
+        user=user,
+        output_playlists=output_playlists,
+        output_songs=output_songs,
+        feedback_like_songs=feedback_like_songs,
+        query_image_url=query_image_url,
+        query_genres=query_genres,
+    )
