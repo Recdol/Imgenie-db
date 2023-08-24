@@ -1,8 +1,9 @@
 import unittest
-from .common import connect_to_db
+
 import db
 from db.repository import UserRepository
-from db.model import User
+from .common import connect_to_db
+from .document_provider import create_user
 
 
 class TestUser(unittest.TestCase):
@@ -17,24 +18,21 @@ class TestUser(unittest.TestCase):
         db.disconnect()
 
     def test_create_user(self):
-        self.__user()
+        create_user(self.user_repository)
 
     def test_find_by_geine_id(self):
-        user = self.__user()
+        user = create_user(self.user_repository)
 
         found = self.user_repository.find_by_id(user.id)
         assert user == found
 
     def test_find_all(self):
         users = [
-            self.__user(),
-            self.__user(),
-            self.__user(),
+            create_user(self.user_repository),
+            create_user(self.user_repository),
+            create_user(self.user_repository),
         ]
 
         found = self.user_repository.find_all()
         for user in users:
             assert user in found
-
-    def __user(self) -> User:
-        return self.user_repository.create_user()
