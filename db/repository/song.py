@@ -41,12 +41,22 @@ class SongRepository:
         song: SongDocument = SongDocument.objects(genie_id=genie_id).first()
 
         if not song:
-            raise NotFoundSongException(f"Can't find song document: genie_id={genie_id}")
+            raise NotFoundSongException(
+                f"Can't find song document: genie_id={genie_id}"
+            )
 
         song.delete()
 
     def find_by_genie_id(self, genie_id: str) -> Song | None:
         song: SongDocument = SongDocument.objects(genie_id=genie_id).first()
+
+        if not song:
+            return None
+
+        return song.to_dto()
+
+    def find_by_id(self, id: str) -> Song | None:
+        song: SongDocument = SongDocument.objects(id=id).first()
 
         if not song:
             return None
