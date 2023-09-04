@@ -33,7 +33,13 @@ class TestSong(unittest.TestCase):
         create_song(self.song_repository, artist=artist, album=album, genie_id="S1")
 
         # not exists artist
-        fake_artist = Artist(id="123", genie_id="A3", name="없는것", created_at=date(2000, 3, 15), updated_at=date(2000, 3, 15))
+        fake_artist = Artist(
+            id="123",
+            genie_id="A3",
+            name="없는것",
+            created_at=date(2000, 3, 15),
+            updated_at=date(2000, 3, 15),
+        )
         fake_album = Album(
             id="456",
             genie_id="A9",
@@ -43,8 +49,18 @@ class TestSong(unittest.TestCase):
             created_at=date(2000, 3, 15),
             updated_at=date(2000, 3, 15),
         )
-        self.assertRaises(NotFoundArtistException, lambda: create_song(self.song_repository, artist=fake_artist, album=album, genie_id="S2"))
-        self.assertRaises(NotFoundAlbumException, lambda: create_song(self.song_repository, artist=artist, album=fake_album, genie_id="E1"))
+        self.assertRaises(
+            NotFoundArtistException,
+            lambda: create_song(
+                self.song_repository, artist=fake_artist, album=album, genie_id="S2"
+            ),
+        )
+        self.assertRaises(
+            NotFoundAlbumException,
+            lambda: create_song(
+                self.song_repository, artist=artist, album=fake_album, genie_id="E1"
+            ),
+        )
 
     def test_delete_by_genie_id(self):
         artist = create_artist(self.artist_repository)
@@ -69,24 +85,44 @@ class TestSong(unittest.TestCase):
         found = self.song_repository.find_by_genie_id(song.genie_id)
         assert song == found
 
+    def test_find_by_id(self):
+        artist = create_artist(self.artist_repository)
+        album = create_album(self.album_repository)
+        song = create_song(self.song_repository, artist=artist, album=album)
+
+        found = self.song_repository.find_by_id(song.id)
+        assert song == found
+
     def test_find_by_updated_at_gte(self):
         artist = create_artist(self.artist_repository)
         album = create_album(self.album_repository)
 
-        song1 = create_song(self.song_repository, artist=artist, album=album, genie_id="S1")  # noqa: F841
+        song1 = create_song(
+            self.song_repository, artist=artist, album=album, genie_id="S1"
+        )  # noqa: F841
         time.sleep(0.01)
-        song2 = create_song(self.song_repository, artist=artist, album=album, genie_id="S2")
+        song2 = create_song(
+            self.song_repository, artist=artist, album=album, genie_id="S2"
+        )
 
-        found = self.song_repository.find_by_updated_at_gte(datetime.utcnow() - timedelta(milliseconds=1))
+        found = self.song_repository.find_by_updated_at_gte(
+            datetime.utcnow() - timedelta(milliseconds=1)
+        )
         assert [song2] == found
 
     def test_find_all(self):
         artist = create_artist(self.artist_repository)
         album = create_album(self.album_repository)
         songs = [
-            create_song(self.song_repository, artist=artist, album=album, genie_id="S1"),
-            create_song(self.song_repository, artist=artist, album=album, genie_id="S2"),
-            create_song(self.song_repository, artist=artist, album=album, genie_id="S3"),
+            create_song(
+                self.song_repository, artist=artist, album=album, genie_id="S1"
+            ),
+            create_song(
+                self.song_repository, artist=artist, album=album, genie_id="S2"
+            ),
+            create_song(
+                self.song_repository, artist=artist, album=album, genie_id="S3"
+            ),
         ]
 
         found = self.song_repository.find_all()
