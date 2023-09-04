@@ -46,7 +46,7 @@ def find_playlist_doc_by_dto(playlist: Playlist) -> PlaylistDocument:
 
 
 def find_playlist_docs_by_dto(
-    playlists: tuple[Playlist],
+    playlists: set[Playlist],
 ) -> "QuerySet[PlaylistDocument]":
     playlists_genie_ids = [playlists.genie_id for playlists in playlists]
     query_set: QuerySet[PlaylistDocument] = PlaylistDocument.objects(
@@ -81,7 +81,7 @@ def find_song_doc_by_dto(song: Song) -> SongDocument:
     return song
 
 
-def find_song_docs_by_dto(songs: tuple[Song]) -> "QuerySet[SongDocument]":
+def find_song_docs_by_dto(songs: set[Song]) -> "QuerySet[SongDocument]":
     songs_genie_ids = [songs.genie_id for songs in songs]
     query_set: QuerySet[SongDocument] = SongDocument.objects(
         genie_id__in=songs_genie_ids
