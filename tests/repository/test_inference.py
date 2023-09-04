@@ -75,11 +75,16 @@ class TestUser(unittest.TestCase):
         song = create_song(self.song_repository, album=album, artist=artist)
         playlist = create_playlist(self.playlist_repository, songs=[song])
 
-        inference = create_inference(self.inference_repository, user=user, output_playlists=[playlist], output_songs=[song], feedback_like_songs=[])
+        inference = create_inference(
+            self.inference_repository, user=user, output_playlists=[playlist], output_songs=[song], feedback_like_songs=[song]
+        )
 
-        self.inference_repository.add_feedback_like_song_by_id(inference.id, song)
         self.inference_repository.delete_feedback_like_song(inference.id, song)
 
         inferences = self.inference_repository.find_by_user(user)
+        like_songs = []
 
-        self.assertNotIn(inference, inferences)
+        for infer in inferences:
+            like_songs.extend(infer.feedback.like_songs)
+
+        self.assertNotIn(song, like_songs)
