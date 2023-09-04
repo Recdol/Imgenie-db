@@ -1,5 +1,6 @@
 from pydantic import BaseModel
+from .mixin.hash import HashableByIdMixin
 
 
-class User(BaseModel):
+class User(HashableByIdMixin, BaseModel):
     id: str

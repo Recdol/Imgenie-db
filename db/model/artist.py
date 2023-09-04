@@ -1,8 +1,9 @@
 from pydantic import BaseModel
 from datetime import datetime
+from .mixin.hash import HashableByIdMixin
 
 
-class Artist(BaseModel):
+class Artist(HashableByIdMixin, BaseModel):
     id: str
     genie_id: str
     name: str

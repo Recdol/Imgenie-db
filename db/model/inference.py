@@ -3,6 +3,7 @@ from datetime import datetime
 from .song import Song
 from .playlist import Playlist
 from .user import User
+from .mixin.hash import HashableByIdMixin
 
 
 class InferenceQuery(BaseModel):
@@ -19,7 +20,7 @@ class InferenceFeedback(BaseModel):
     like_songs: list[Song]
 
 
-class Inference(BaseModel):
+class Inference(HashableByIdMixin, BaseModel):
     id: str
     user: User
     query: InferenceQuery

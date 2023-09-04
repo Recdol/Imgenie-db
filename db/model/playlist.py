@@ -1,9 +1,10 @@
 from pydantic import BaseModel
 from datetime import datetime
 from .song import Song
+from .mixin.hash import HashableByIdMixin
 
 
-class Playlist(BaseModel):
+class Playlist(HashableByIdMixin, BaseModel):
     id: str
     genie_id: str
     title: str
