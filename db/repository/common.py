@@ -61,8 +61,9 @@ def find_playlist_docs_by_dto(
         founds = list(query_set)
 
         for playlist in playlists:
-            if playlist not in founds:
-                not_found_playlists.append(playlist)
+            for found in founds:
+                if playlist.id != found.id:
+                    not_found_playlists.append(playlist)
 
         raise NotFoundPlaylistException(
             f"Can't find playlist documents: {not_found_playlists}"
@@ -94,8 +95,9 @@ def find_song_docs_by_dto(songs: tuple[Song]) -> "QuerySet[SongDocument]":
         founds = list(query_set)
 
         for song in songs:
-            if song not in founds:
-                not_found_songs.append(song)
+            for found in founds:
+                if song.id != found.id:
+                    not_found_songs.append(song)
 
         raise NotFoundSongException(f"Can't find song documents: {not_found_songs}")
 
