@@ -1,6 +1,18 @@
 from mongoengine import QuerySet
-from ..exception import NotFoundAlbumException, NotFoundArtistException, NotFoundPlaylistException, NotFoundSongException, NotFoundUserException
-from ..document import AlbumDocument, ArtistDocument, PlaylistDocument, SongDocument, UserDocument
+from ..exception import (
+    NotFoundAlbumException,
+    NotFoundArtistException,
+    NotFoundPlaylistException,
+    NotFoundSongException,
+    NotFoundUserException,
+)
+from ..document import (
+    AlbumDocument,
+    ArtistDocument,
+    PlaylistDocument,
+    SongDocument,
+    UserDocument,
+)
 from ..model import Album, Artist, Playlist, Song, User
 
 
@@ -23,7 +35,9 @@ def find_artist_doc_by_dto(artist: Artist) -> ArtistDocument:
 
 
 def find_playlist_doc_by_dto(playlist: Playlist) -> PlaylistDocument:
-    playlist: PlaylistDocument = PlaylistDocument.objects(genie_id=playlist.genie_id).first()
+    playlist: PlaylistDocument = PlaylistDocument.objects(
+        genie_id=playlist.genie_id
+    ).first()
 
     if not playlist:
         raise NotFoundPlaylistException(f"Can't find playlist document: {playlist}")
@@ -31,9 +45,13 @@ def find_playlist_doc_by_dto(playlist: Playlist) -> PlaylistDocument:
     return playlist
 
 
-def find_playlist_docs_by_dto(playlists: tuple[Playlist]) -> "QuerySet[PlaylistDocument]":
+def find_playlist_docs_by_dto(
+    playlists: tuple[Playlist],
+) -> "QuerySet[PlaylistDocument]":
     playlists_genie_ids = [playlists.genie_id for playlists in playlists]
-    query_set: QuerySet[PlaylistDocument] = PlaylistDocument.objects(genie_id__in=playlists_genie_ids)
+    query_set: QuerySet[PlaylistDocument] = PlaylistDocument.objects(
+        genie_id__in=playlists_genie_ids
+    )
 
     if playlists and not query_set:
         raise NotFoundPlaylistException(f"Can't find playlist documents: {playlists}")
@@ -43,10 +61,12 @@ def find_playlist_docs_by_dto(playlists: tuple[Playlist]) -> "QuerySet[PlaylistD
         founds = list(query_set)
 
         for playlist in playlists:
-            if playlist in founds:
+            if playlist not in founds:
                 not_found_playlists.append(playlist)
 
-        raise NotFoundPlaylistException(f"Can't find playlist documents: {not_found_playlists}")
+        raise NotFoundPlaylistException(
+            f"Can't find playlist documents: {not_found_playlists}"
+        )
 
     return query_set
 
@@ -62,7 +82,9 @@ def find_song_doc_by_dto(song: Song) -> SongDocument:
 
 def find_song_docs_by_dto(songs: tuple[Song]) -> "QuerySet[SongDocument]":
     songs_genie_ids = [songs.genie_id for songs in songs]
-    query_set: QuerySet[SongDocument] = SongDocument.objects(genie_id__in=songs_genie_ids)
+    query_set: QuerySet[SongDocument] = SongDocument.objects(
+        genie_id__in=songs_genie_ids
+    )
 
     if songs and not query_set:
         raise NotFoundSongException(f"Can't find song documents: {songs}")
@@ -72,7 +94,7 @@ def find_song_docs_by_dto(songs: tuple[Song]) -> "QuerySet[SongDocument]":
         founds = list(query_set)
 
         for song in songs:
-            if song in founds:
+            if song not in founds:
                 not_found_songs.append(song)
 
         raise NotFoundSongException(f"Can't find song documents: {not_found_songs}")
