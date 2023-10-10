@@ -40,9 +40,7 @@ class PlaylistRepository:
         playlist: PlaylistDocument = PlaylistDocument.objects(genie_id=genie_id).first()
 
         if not playlist:
-            raise NotFoundPlaylistException(
-                f"Can't find playlist document: genie_id={genie_id}"
-            )
+            raise NotFoundPlaylistException(f"Can't find playlist document: genie_id={genie_id}")
 
         playlist.delete()
 
@@ -59,9 +57,7 @@ class PlaylistRepository:
         return self._playlist_dict2dto(playlist_dict=playlist_dict)
 
     def find_by_updated_at_gte(self, query_dt: datetime) -> list[Playlist]:
-        playlists: QuerySet[PlaylistDocument] = PlaylistDocument.objects(
-            updated_at__gte=query_dt
-        )
+        playlists: QuerySet[PlaylistDocument] = PlaylistDocument.objects(updated_at__gte=query_dt)
 
         if not playlists:
             return None
@@ -71,6 +67,11 @@ class PlaylistRepository:
     def find_all(self) -> list[Playlist]:
         playlists: QuerySet[PlaylistDocument] = PlaylistDocument.objects
         return [playlist.to_dto() for playlist in playlists]
+
+    def find_latest_created_playlist(self) -> Playlist:
+        playlist: PlaylistDocument = PlaylistDocument.objects.order_by("-created_at").first()
+
+        return playlist.to_dto()
 
     @classmethod
     def _population_pipeline(cls) -> list[dict]:
@@ -97,10 +98,7 @@ class PlaylistRepository:
             like_cnt=playlist_dict["like_cnt"],
             view_cnt=playlist_dict["view_cnt"],
             tags=playlist_dict["tags"],
-            songs=[
-                SongRepository._song_dict2dto(song_dict)
-                for song_dict in playlist_dict["songs"]
-            ],
+            songs=[SongRepository._song_dict2dto(song_dict) for song_dict in playlist_dict["songs"]],
             img_url=playlist_dict["img_url"],
             created_at=playlist_dict["created_at"],
             updated_at=playlist_dict["updated_at"],
