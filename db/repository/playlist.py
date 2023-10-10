@@ -69,7 +69,7 @@ class PlaylistRepository:
         return [playlist.to_dto() for playlist in playlists]
 
     def find_latest_created_playlist(self) -> Playlist:
-        playlist: PlaylistDocument = PlaylistDocument.objects.order_by("-created_at").first()
+        playlist: PlaylistDocument = PlaylistDocument.objects.order_by("+created_at").first()
 
         return playlist.to_dto()
 
