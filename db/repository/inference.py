@@ -45,6 +45,14 @@ class InferenceRepository:
         saved: InferenceDocument = inference.save()
         return saved.to_dto()
 
+    def find_by_id(self, id: str) -> Inference | None:
+        inference: InferenceDocument = InferenceDocument.objects(id=id).first()
+
+        if not inference:
+            return None
+
+        return inference.to_dto()
+
     def find_by_user(self, user: User) -> list[Inference]:
         user_doc = find_user_doc_by_dto(user)
 
