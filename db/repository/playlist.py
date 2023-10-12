@@ -49,10 +49,10 @@ class PlaylistRepository:
 
         result: CommandCursor = PlaylistDocument.objects.aggregate(*pipeline)
 
-        if not result:
-            return None
+        playlist_dict = result.try_next()
 
-        playlist_dict = result.next()
+        if not playlist_dict:
+            return None
 
         return self._playlist_dict2dto(playlist_dict=playlist_dict)
 
