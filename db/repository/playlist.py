@@ -64,7 +64,7 @@ class PlaylistRepository:
         return [playlist.to_dto() for playlist in playlists]
 
     def find_all(self) -> list[Playlist]:
-        result: CommandCursor = PlaylistDocument.objects.aggreage(*self._population_pipeline())
+        result: CommandCursor = PlaylistDocument.objects.aggregate(*self._population_pipeline())
         playlist_dicts = list(result)
 
         return [self._playlist_dict2dto(p_dict) for p_dict in playlist_dicts]
