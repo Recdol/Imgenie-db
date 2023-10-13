@@ -44,9 +44,8 @@ class PlaylistRepository:
 
         playlist.delete()
 
-    def find_by_genie_id(self, genie_id: str) -> Playlist:
+    def find_by_genie_id(self, genie_id: str) -> Playlist | None:
         pipeline = [{"$match": {"genie_id": genie_id}}, *self._population_pipeline()]
-
         result: CommandCursor = PlaylistDocument.objects.aggregate(*pipeline)
 
         playlist_dict = result.try_next()
@@ -65,8 +64,10 @@ class PlaylistRepository:
         return [playlist.to_dto() for playlist in playlists]
 
     def find_all(self) -> list[Playlist]:
-        playlists: QuerySet[PlaylistDocument] = PlaylistDocument.objects
-        return [playlist.to_dto() for playlist in playlists]
+        result: CommandCursor = PlaylistDocument.objects.aggreage(*self._population_pipeline())
+        playlist_dicts = list(result)
+
+        return [self._playlist_dict2dto(p_dict) for p_dict in playlist_dicts]
 
     def find_latest_created_playlist(self) -> Playlist:
         playlist: PlaylistDocument = PlaylistDocument.objects.order_by("+created_at").first()
