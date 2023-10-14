@@ -70,7 +70,7 @@ class PlaylistRepository:
         return [self._playlist_dict2dto(p_dict) for p_dict in playlist_dicts]
 
     def find_latest_created_playlist(self) -> Playlist:
-        playlist: PlaylistDocument = PlaylistDocument.objects.order_by("+created_at").first()
+        playlist: PlaylistDocument = PlaylistDocument.objects.order_by("-created_at").first()
 
         return playlist.to_dto()
 
